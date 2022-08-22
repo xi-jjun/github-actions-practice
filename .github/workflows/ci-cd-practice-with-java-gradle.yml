@@ -28,12 +28,15 @@ jobs:
     
     - name: Grant execute permission for gradlew
       run : chmod +x gradlew
+      working-directory: "./github-actions"
     
     - name : Build test with Gradle
       run : ./gradlew clean test
+      working-directory: "./github-actions"
       
     - name : Build with Gradle
       run : ./gradlew build
+      working-directory: "./github-actions"
     
     - name : Docker build
       run : |
@@ -41,4 +44,5 @@ jobs:
         docker build -t lguplus-cicd .
         docker tag lguplus-cicd rlawowns97/lguplus-cicd:${GITHUB_SHA::7}
         docker push rlawowns97/lguplus-cicd:${GITHUB_SHA::7}
+      working-directory: "."
 
