@@ -16,7 +16,6 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: lguplus-aws
 #   ECR_IMAGE_TAG: 12ee0de01a479384403644893a6cf29646c67e4b
-  ECR_IMAGE_TAG: latest
   
   ECS_CLUSTER_NAME: test-cluster
   ECS_CONTAINER_NAME: test-container
@@ -58,6 +57,9 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+    
+    - name: Check current directory
+      run: ls -al
 
     - name: Build, tag, and push docker image to Amazon ECR
       id: build-image
@@ -66,9 +68,11 @@ jobs:
         REPOSITORY: ${{ env.ECR_REPOSITORY }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo "who is registry => $REGISTRY"
+        docker build -t --platform amd64 ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }} .
+        docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
+      #  echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+      working-directory: "."
     
     - name: Download task definition
       id: task-file-json
