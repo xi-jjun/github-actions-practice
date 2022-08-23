@@ -21,7 +21,7 @@ public class HelloController {
 
 	@GetMapping
 	public String mainRouting() {
-		return "This is main page";
+		return "This is main page PLZ Help Me";
 	}
 }
 
