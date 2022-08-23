@@ -17,6 +17,11 @@ env:
   ECR_REPOSITORY: lguplus-aws
   IMAGE_TAG: latest
   
+  ECS_CLUSTER_NAME: test-cluster
+  ECS_CONTAINER_NAME: test-container
+  ECS_SERVICE_NAME: test-service
+  ECS_TASK_DEFINITION: task-test
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,7 +46,7 @@ jobs:
     - name : Build with Gradle
       run : ./gradlew build
       working-directory: "./github-actions"
-    
+  
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -61,13 +66,21 @@ jobs:
       run: |
         docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
         docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-        
-#     - name : Docker build
-#       run : |
-#         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-#         docker build -t lguplus-aws .
-#         docker tag lguplus-aws rlawowns97/lguplus-aws:${GITHUB_SHA::7}
-#         docker push rlawowns97/lguplus-aws:${GITHUB_SHA::7}
-#       working-directory: "."
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+    
+    
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container-name: ${{ env.ECS_CONTAINER_NAME }}
+        image: ${{ steps.build-image.outputs.image }}
 
-
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE_NAME }}
+        cluster: ${{ env.ECS_CLUSTER_NAME }}
+        wait-for-service-stability: true
