@@ -15,7 +15,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: lguplus-aws
-  IMAGE_TAG: latest
+#   IMAGE_TAG: latest
   
   ECS_CLUSTER_NAME: test-cluster
   ECS_CONTAINER_NAME: test-container
@@ -73,6 +73,7 @@ jobs:
       id: task-file-json
       run: |
         aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > task-definition.json
+        ls -al
     
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
