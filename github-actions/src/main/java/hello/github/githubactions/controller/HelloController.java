@@ -18,5 +18,10 @@ public class HelloController {
 	public String helloProvider(@PathVariable(name = "provider") String provider) {
 		return "Hello, " + provider + "!!";
 	}
+
+	@GetMapping
+	public String mainRouting() {
+		return "This is main page";
+	}
 }
 
