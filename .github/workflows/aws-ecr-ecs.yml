@@ -68,10 +68,9 @@ jobs:
         REPOSITORY: ${{ env.ECR_REPOSITORY }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        echo "who is registry => $REGISTRY"
         docker build --platform amd64 -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }} .
         docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
-      #  echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo "::set-output name=image::$REGISTRY/$REPOSITORY:$IMAGE_TAG"
       working-directory: "."
     
     - name: Download task definition
