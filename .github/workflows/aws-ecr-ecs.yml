@@ -15,7 +15,8 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: lguplus-aws
-  ECR_IMAGE_TAG: latest
+  ECR_IMAGE_TAG: 12ee0de01a479384403644893a6cf29646c67e4b
+#   ECR_IMAGE_TAG: latest
   
   ECS_CLUSTER_NAME: test-cluster
   ECS_CONTAINER_NAME: test-container
