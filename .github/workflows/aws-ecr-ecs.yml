@@ -35,7 +35,7 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
     
-    - uses: actions/checkout@v
+    - uses: actions/checkout@v3
     - run: touch ./github-actions/src/main/resources/application.yml
     - run: echo "${{ secrets.SPRING_APPLICATION_YML }}" > ./github-actions/src/main/resources/application.yml
       
