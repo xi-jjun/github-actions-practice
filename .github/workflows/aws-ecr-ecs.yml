@@ -35,11 +35,9 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
     
-    - name: add application yml file
-      run: touch ./github-actions/src/main/resources/application.yml
-    
-    - name: write setting file to yml
-      run: echo "${{ secrets.SPRING_APPLICATION_YML }}" > ./github-actions/src/main/resources/application.yml
+    - uses: actions/checkout@v
+    - run: touch ./github-actions/src/main/resources/application.yml
+    - run: echo "${{ secrets.SPRING_APPLICATION_YML }}" > ./github-actions/src/main/resources/application.yml
       
     - uses: actions/upload-artifact@v2
       with: 
