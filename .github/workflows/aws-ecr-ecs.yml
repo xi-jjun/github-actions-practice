@@ -35,10 +35,13 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
     
-    - uses: actions/checkout@v3
-    - run: ls -al
-    - run: touch ./github-actions/src/main/resources/application.yml
-    - run: echo "${{ secrets.SPRING_APPLICATION_YML }}" > ./github-actions/src/main/resources/application.yml
+    - name: make application yml file
+    - run: |
+        ls -al
+        cd ./github-actions
+        ls -al
+        touch ./github-actions/src/main/resources/application.yml
+        echo "${{ secrets.SPRING_APPLICATION_YML }}" > ./github-actions/src/main/resources/application.yml
       
     - uses: actions/upload-artifact@v2
       with: 
