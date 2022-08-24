@@ -36,6 +36,7 @@ jobs:
         distribution: 'temurin'
     
     - uses: actions/checkout@v3
+    - run: ls -al
     - run: touch ./github-actions/src/main/resources/application.yml
     - run: echo "${{ secrets.SPRING_APPLICATION_YML }}" > ./github-actions/src/main/resources/application.yml
       
