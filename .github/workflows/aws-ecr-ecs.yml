@@ -37,9 +37,7 @@ jobs:
     
     - name: make application yml file
       run: |
-        ls -al
-        cd ./github-actions
-        ls -al
+        mkdir -p ./github-actions/src/main/resources
         touch ./github-actions/src/main/resources/application.yml
         echo "${{ secrets.SPRING_APPLICATION_YML }}" > ./github-actions/src/main/resources/application.yml
       
