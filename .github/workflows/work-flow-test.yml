@@ -1,0 +1,26 @@
+name: work flow test
+on: push
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: make test1 txt file
+        run: touch test1.txt
+      
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1    
+    steps:
+      - name: job2 check current directory
+        run: ls -al
+      
+      - name: make test2 txt file
+        run: touch test2.txt
+      
+  job3:
+    runs-on: ubuntu-latest
+    needs: [job1, job2]    
+    steps:
+      - name: job3 check current directory
+        run: ls -al
